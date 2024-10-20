@@ -11,7 +11,7 @@ import { Tooltip, TooltipContent, TooltipTrigger } from '../ui/tooltip';
 
 export function NetworkStyle({
   defaultNodeSize,
-  defaultLabelRenderedSizeThreshold,
+  labelDensity,
   showEdgeLabel,
   showEdgeColor,
   defaultNodeColor,
@@ -20,7 +20,7 @@ export function NetworkStyle({
   handleCheckBox,
 }: {
   defaultNodeSize: number;
-  defaultLabelRenderedSizeThreshold: number;
+  labelDensity: number;
   showEdgeLabel: boolean;
   showEdgeColor: boolean;
   defaultNodeColor: string;
@@ -73,22 +73,22 @@ export function NetworkStyle({
           <Tooltip>
             <div className='flex flex-col space-y-2 w-full'>
               <TooltipTrigger asChild>
-                <Label htmlFor='defaultLabelRenderedSizeThreshold' className='text-xs font-semibold'>
-                  Label Threshold
+                <Label htmlFor='labelDensity' className='text-xs font-semibold'>
+                  Label Density
                 </Label>
               </TooltipTrigger>
               <Slider
-                id='defaultLabelRenderedSizeThreshold'
+                id='labelDensity'
                 className='w-full'
                 min={0.1}
                 max={10}
                 step={0.1}
-                value={[defaultLabelRenderedSizeThreshold]}
-                onValueChange={value => handleDefaultChange(value?.[0], 'defaultLabelRenderedSizeThreshold')}
+                value={[labelDensity]}
+                onValueChange={value => handleDefaultChange(value?.[0], 'labelDensity')}
               />
             </div>
             <TooltipContent>
-              <p>Change till how far label should be visible</p>
+              <p>Change dense label should be visible</p>
             </TooltipContent>
           </Tooltip>
           <Input
@@ -97,8 +97,8 @@ export function NetworkStyle({
             min={1}
             max={50}
             step={1}
-            value={defaultLabelRenderedSizeThreshold}
-            onChange={e => handleDefaultChange(Number.parseFloat(e.target.value), 'defaultLabelRenderedSizeThreshold')}
+            value={labelDensity}
+            onChange={e => handleDefaultChange(Number.parseFloat(e.target.value), 'labelDensity')}
           />
         </div>
         <hr />

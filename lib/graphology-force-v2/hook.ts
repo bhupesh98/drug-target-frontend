@@ -1,4 +1,5 @@
 import { useSigma } from '@react-sigma/core';
+import { inertia } from 'framer-motion';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { ForceSupervisor } from './ForceSupervisor';
 
@@ -22,6 +23,19 @@ export interface WorkerLayoutForceSettings {
 
   // Many body force
   chargeStrength?: number;
+  distanceMin2?: number;
+  distanceMax2?: number;
+  theta2?: number;
+
+  // Radial force
+  radialRadius?: number;
+  radialStrength?: number;
+
+  // sigmajs copy
+  inertia?: number;
+  gravity?: number;
+  attraction?: number;
+  repulsion?: number;
 }
 
 export interface WorkerLayoutForceHook {

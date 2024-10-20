@@ -51,7 +51,7 @@ export interface GraphStore {
   /**
    * Default label rendered size threshold
    */
-  defaultLabelRenderedSizeThreshold: number;
+  labelDensity: number;
 
   /**
    * Default edge color of the graph

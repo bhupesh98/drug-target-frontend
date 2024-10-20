@@ -14,7 +14,7 @@ export function RightSideBar() {
   const defaultNodeSize = useStore(state => state.defaultNodeSize);
   const defaultNodeColor = useStore(state => state.defaultNodeColor);
   const defaultEdgeColor = useStore(state => state.defaultEdgeColor);
-  const defaultLabelRenderedSizeThreshold = useStore(state => state.defaultLabelRenderedSizeThreshold);
+  const labelDensity = useStore(state => state.labelDensity);
   const showEdgeLabel = useStore(state => state.showEdgeLabel);
   const showEdgeColor = useStore(state => state.showEdgeColor);
   const radialAnalysis = useStore(state => state.radialAnalysis);
@@ -53,7 +53,7 @@ export function RightSideBar() {
             <Label htmlFor='network-animation-control' className='text-xs font-semibold'>
               Animation
             </Label>
-            <Switch id='network-animation-control' onCheckedChange={handleGraphAnimation} />
+            <Switch id='network-animation-control' defaultChecked onCheckedChange={handleGraphAnimation} />
           </div>
           <NetworkLayout forceSettings={forceSettings} updateForceSetting={updateForceSetting} />
         </div>
@@ -62,7 +62,7 @@ export function RightSideBar() {
         defaultNodeSize={defaultNodeSize}
         defaultNodeColor={defaultNodeColor}
         defaultEdgeColor={defaultEdgeColor}
-        defaultLabelRenderedSizeThreshold={defaultLabelRenderedSizeThreshold}
+        labelDensity={labelDensity}
         showEdgeLabel={showEdgeLabel}
         showEdgeColor={showEdgeColor}
         handleDefaultChange={handleDefaultChange}

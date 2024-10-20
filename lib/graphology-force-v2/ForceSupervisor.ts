@@ -15,7 +15,7 @@ export type NodeStates = Record<string, State>;
 export const DEFAULT_FORCE_SETTINGS: Required<WorkerLayoutForceSettings> = {
   // simulation
   alpha: 1,
-  alphaMin: 0.001,
+  alphaMin: 0.0001,
   alphaDecay: 0.02276277,
   alphaTarget: 0,
   velocityDecay: 0.1,
@@ -24,13 +24,26 @@ export const DEFAULT_FORCE_SETTINGS: Required<WorkerLayoutForceSettings> = {
   centeringForce: 1,
 
   // Collide force
-  collideRadius: 5,
-  collideForce: 1000,
+  collideRadius: 10,
+  collideForce: 1,
 
   // Link force
-  linkDistance: 30,
+  linkDistance: 10,
   // Many body force
-  chargeStrength: -30,
+  chargeStrength: -200,
+  distanceMin2: 1,
+  distanceMax2: Number.POSITIVE_INFINITY,
+  theta2: 0.81,
+
+  // Radial force
+  radialRadius: 100,
+  radialStrength: 0.1,
+
+  // sigmaJS copy
+  inertia: 0.95,
+  gravity: 0.00001,
+  attraction: 0.0001,
+  repulsion: 0.001,
 };
 
 export class ForceSupervisor {
@@ -63,6 +76,22 @@ export class ForceSupervisor {
 
       // Many body force
       chargeStrength: settings.chargeStrength ?? DEFAULT_FORCE_SETTINGS.chargeStrength,
+      distanceMin2: settings.distanceMin2
+        ? settings.distanceMin2 * settings.distanceMin2
+        : DEFAULT_FORCE_SETTINGS.distanceMin2,
+      distanceMax2: settings.distanceMax2
+        ? settings.distanceMax2 * settings.distanceMax2
+        : DEFAULT_FORCE_SETTINGS.distanceMax2,
+      theta2: settings.theta2 ? settings.theta2 * settings.theta2 : DEFAULT_FORCE_SETTINGS.theta2,
+
+      // Radial force
+      radialRadius: settings.radialRadius ?? DEFAULT_FORCE_SETTINGS.radialRadius,
+      radialStrength: settings.radialStrength ?? DEFAULT_FORCE_SETTINGS.radialStrength,
+
+      inertia: settings.inertia ?? DEFAULT_FORCE_SETTINGS.inertia,
+      gravity: settings.gravity ?? DEFAULT_FORCE_SETTINGS.gravity,
+      attraction: settings.attraction ?? DEFAULT_FORCE_SETTINGS.attraction,
+      repulsion: settings.repulsion ?? DEFAULT_FORCE_SETTINGS.repulsion,
     };
   }
 
@@ -73,21 +102,20 @@ export class ForceSupervisor {
 
     this.#graph.updateEachNodeAttributes((node, attr) => {
       const state = this.#nodeStates[node];
-      this.#nodeStates[node] = state;
-      attr.x = state.x += state.vx *= this.#settings.velocityDecay;
-      attr.y = state.y += state.vy *= this.#settings.velocityDecay;
+      attr.x = state.x += state.vx;
+      attr.y = state.y += state.vy;
       return attr;
     });
 
-    if (
-      (this.#settings.alpha ?? DEFAULT_FORCE_SETTINGS.alpha) <
-      (this.#settings.alphaMin ?? DEFAULT_FORCE_SETTINGS.alphaMin)
-    ) {
-      this.stop();
-      return;
-    }
+    // if (
+    //   (this.#settings.alpha ?? DEFAULT_FORCE_SETTINGS.alpha) <
+    //   (this.#settings.alphaMin ?? DEFAULT_FORCE_SETTINGS.alphaMin)
+    // ) {
+    //   this.stop();
+    //   return;
+    // }
 
-    this.#frameID = requestAnimationFrame(this.#runFrame);
+    this.#frameID = requestAnimationFrame(() => this.#runFrame());
   };
 
   start() {
@@ -110,11 +138,13 @@ export class ForceSupervisor {
     this.#nodeStates = {};
     this.#killed = true;
   }
+
   updateSettings(settings: WorkerLayoutForceSettings) {
     this.#settings = {
       ...this.#settings,
       ...settings,
     };
+    if (this.#killed) throw new Error('Force Layout has been killed');
     this.start();
   }
 }

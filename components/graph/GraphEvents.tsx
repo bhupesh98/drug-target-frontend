@@ -168,14 +168,14 @@ export function GraphEvents() {
   const setSettings = useSetSettings();
   const defaultNodeSize = useStore(state => state.defaultNodeSize);
   const defaultNodeColor = useStore(state => state.defaultNodeColor);
-  const defaultLabelRenderedSizeThreshold = useStore(state => state.defaultLabelRenderedSizeThreshold);
+  const labelDensity = useStore(state => state.labelDensity);
   const showEdgeLabel = useStore(state => state.showEdgeLabel);
 
   useEffect(() => {
     setSettings({
-      labelRenderedSizeThreshold: defaultLabelRenderedSizeThreshold,
+      labelDensity: labelDensity,
     });
-  }, [defaultLabelRenderedSizeThreshold, setSettings]);
+  }, [labelDensity, setSettings]);
 
   useEffect(() => {
     setSettings({

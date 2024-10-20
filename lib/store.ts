@@ -17,13 +17,13 @@ export const useStore = create<GraphStore>(set => ({
   defaultNodeColor: 'blue',
   // Select defaultValue best for viewing the graph
   forceSettings: {
-    chargeStrength: 100,
+    chargeStrength: -200,
     linkDistance: 20,
     collideForce: 1,
     collideRadius: 10,
   },
   defaultNodeSize: 5,
-  defaultLabelRenderedSizeThreshold: 1,
+  labelDensity: 1,
   defaultEdgeColor: 'red',
   selectedNodes: [],
   selectedRadioNodeColor: 'None',

@@ -10,6 +10,7 @@ import type { Attributes } from 'graphology-types';
 import { Focus, Maximize, Minimize, ZoomIn, ZoomOut } from 'lucide-react';
 import { Suspense } from 'react';
 import type { Sigma } from 'sigma';
+import { EdgeLineProgram } from 'sigma/rendering';
 import { ColorAnalysis, ForceLayout, GraphAnalysis, GraphEvents, LoadGraph, NodeSearch, SizeAnalysis } from '.';
 
 export type SigmaContainerProps = _SigmaContainerProps<NodeAttributes, EdgeAttributes, Attributes> &
@@ -32,6 +33,9 @@ export function SigmaContainer(props: SigmaContainerProps) {
               { size: { fill: true }, color: { attribute: 'color' } },
             ],
           }),
+        },
+        edgeProgramClasses: {
+          line: EdgeLineProgram,
         },
         defaultNodeColor,
         labelSize: 10,
